@@ -1,0 +1,3390 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="" />
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="http://sportsad.github.io/theme/stylesheet/style.min.css">
+
+  <link rel="stylesheet" type="text/css" href="http://sportsad.github.io/theme/pygments/github.min.css">
+  <link rel="stylesheet" type="text/css" href="http://sportsad.github.io/theme/font-awesome/css/font-awesome.min.css">
+
+
+    <link href="http://sportsad.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Andrew Sportsman's Blog Atom">
+
+
+
+
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#333333">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#333333">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Microsoft EDGE -->
+    <meta name="msapplication-TileColor" content="#333333">
+
+<meta name="author" content="Andrew Sportsman" />
+<meta name="description" content="Learning recommender systems with Amazon data" />
+<meta name="keywords" content="python">
+
+<meta property="og:site_name" content="Andrew Sportsman's Blog"/>
+<meta property="og:title" content="Recommender System"/>
+<meta property="og:description" content="Learning recommender systems with Amazon data"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="http://sportsad.github.io/recommender-system.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2020-05-31 17:20:00-04:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="http://sportsad.github.io/author/andrew-sportsman.html">
+<meta property="article:section" content="posts"/>
+<meta property="article:tag" content="python"/>
+<meta property="og:image" content="">
+
+  <title>Andrew Sportsman's Blog &ndash; Recommender System</title>
+
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="http://sportsad.github.io">
+        <img src="http://sportsad.github.io/theme/img/profile.png" alt="Andrew Sportsman" title="Andrew Sportsman">
+      </a>
+      <h1><a href="http://sportsad.github.io">Andrew Sportsman</a></h1>
+
+
+      <nav>
+        <ul class="list">
+          <li><a href="http://sportsad.github.io/pages/about.html#about">About</a></li>
+          <li><a href="http://sportsad.github.io/pages/contact.html#contact">Contact</a></li>
+
+          <li><a href="https://public.tableau.com/profile/andrew.sportsman#!/?newProfile=&activeTab=0" target="_blank">Tableau Public</a></li>
+        </ul>
+      </nav>
+
+      <ul class="social">
+        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/andrew-sportsman/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+      </ul>
+    </div>
+
+
+  </aside>
+  <main>
+
+    <nav>
+      <a href="http://sportsad.github.io">    Home
+</a>
+
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+
+      <a href="http://sportsad.github.io/feeds/all.atom.xml">    Atom
+</a>
+
+    </nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="recommender-system">Recommender System</h1>
+    <p>
+          Posted on Sun 31 May 2020 in <a href="http://sportsad.github.io/category/posts.html">posts</a>
+
+
+    </p>
+  </header>
+
+
+  <div>
+    <style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
+.ansibold {
+  font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
+  border-color: #ababab;
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
+}
+@media print {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
+  border: 0;
+  border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+div.output_area .mglyph > img {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 1px 0 1px 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+
+
+
+.rendered_html pre,
+
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css"> .highlight pre  .hll { background-color: #ffffcc }
+ .highlight pre   { background: #f8f8f8; }
+ .highlight pre  .c { color: #408080; font-style: italic } /* Comment */
+ .highlight pre  .err { border: 1px solid #FF0000 } /* Error */
+ .highlight pre  .k { color: #008000; font-weight: bold } /* Keyword */
+ .highlight pre  .o { color: #666666 } /* Operator */
+ .highlight pre  .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+ .highlight pre  .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+ .highlight pre  .cp { color: #BC7A00 } /* Comment.Preproc */
+ .highlight pre  .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+ .highlight pre  .c1 { color: #408080; font-style: italic } /* Comment.Single */
+ .highlight pre  .cs { color: #408080; font-style: italic } /* Comment.Special */
+ .highlight pre  .gd { color: #A00000 } /* Generic.Deleted */
+ .highlight pre  .ge { font-style: italic } /* Generic.Emph */
+ .highlight pre  .gr { color: #FF0000 } /* Generic.Error */
+ .highlight pre  .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+ .highlight pre  .gi { color: #00A000 } /* Generic.Inserted */
+ .highlight pre  .go { color: #888888 } /* Generic.Output */
+ .highlight pre  .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+ .highlight pre  .gs { font-weight: bold } /* Generic.Strong */
+ .highlight pre  .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+ .highlight pre  .gt { color: #0044DD } /* Generic.Traceback */
+ .highlight pre  .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+ .highlight pre  .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+ .highlight pre  .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+ .highlight pre  .kp { color: #008000 } /* Keyword.Pseudo */
+ .highlight pre  .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+ .highlight pre  .kt { color: #B00040 } /* Keyword.Type */
+ .highlight pre  .m { color: #666666 } /* Literal.Number */
+ .highlight pre  .s { color: #BA2121 } /* Literal.String */
+ .highlight pre  .na { color: #7D9029 } /* Name.Attribute */
+ .highlight pre  .nb { color: #008000 } /* Name.Builtin */
+ .highlight pre  .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+ .highlight pre  .no { color: #880000 } /* Name.Constant */
+ .highlight pre  .nd { color: #AA22FF } /* Name.Decorator */
+ .highlight pre  .ni { color: #999999; font-weight: bold } /* Name.Entity */
+ .highlight pre  .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+ .highlight pre  .nf { color: #0000FF } /* Name.Function */
+ .highlight pre  .nl { color: #A0A000 } /* Name.Label */
+ .highlight pre  .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+ .highlight pre  .nt { color: #008000; font-weight: bold } /* Name.Tag */
+ .highlight pre  .nv { color: #19177C } /* Name.Variable */
+ .highlight pre  .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+ .highlight pre  .w { color: #bbbbbb } /* Text.Whitespace */
+ .highlight pre  .mb { color: #666666 } /* Literal.Number.Bin */
+ .highlight pre  .mf { color: #666666 } /* Literal.Number.Float */
+ .highlight pre  .mh { color: #666666 } /* Literal.Number.Hex */
+ .highlight pre  .mi { color: #666666 } /* Literal.Number.Integer */
+ .highlight pre  .mo { color: #666666 } /* Literal.Number.Oct */
+ .highlight pre  .sa { color: #BA2121 } /* Literal.String.Affix */
+ .highlight pre  .sb { color: #BA2121 } /* Literal.String.Backtick */
+ .highlight pre  .sc { color: #BA2121 } /* Literal.String.Char */
+ .highlight pre  .dl { color: #BA2121 } /* Literal.String.Delimiter */
+ .highlight pre  .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+ .highlight pre  .s2 { color: #BA2121 } /* Literal.String.Double */
+ .highlight pre  .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+ .highlight pre  .sh { color: #BA2121 } /* Literal.String.Heredoc */
+ .highlight pre  .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+ .highlight pre  .sx { color: #008000 } /* Literal.String.Other */
+ .highlight pre  .sr { color: #BB6688 } /* Literal.String.Regex */
+ .highlight pre  .s1 { color: #BA2121 } /* Literal.String.Single */
+ .highlight pre  .ss { color: #19177C } /* Literal.String.Symbol */
+ .highlight pre  .bp { color: #008000 } /* Name.Builtin.Pseudo */
+ .highlight pre  .fm { color: #0000FF } /* Name.Function.Magic */
+ .highlight pre  .vc { color: #19177C } /* Name.Variable.Class */
+ .highlight pre  .vg { color: #19177C } /* Name.Variable.Global */
+ .highlight pre  .vi { color: #19177C } /* Name.Variable.Instance */
+ .highlight pre  .vm { color: #19177C } /* Name.Variable.Magic */
+ .highlight pre  .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="User-Based-Collaborative-Filtering">User Based Collaborative Filtering<a class="anchor-link" href="#User-Based-Collaborative-Filtering">&#182;</a></h2><p>As part of a project in my Big Data Analytics course, I was challenged to create a custom analysis of data provided by the instructor. The dataset is a subset of Amazon item ratings and can be found <a href="http://snap.stanford.edu/data/amazon/productGraph/categoryFiles/ratings_Electronics.csv">here</a>. Working with Amazon data felt like the perfect opportunity to give a recommendation system a try, even if this method wasn't going to be covered in my course work. Ashay Pathak's <a href="https://medium.com/sfu-cspmp/recommendation-systems-user-based-collaborative-filtering-using-n-nearest-neighbors-bf7361dc24e0">post</a> on Medium was a huge help in teaching me the ideas behing user-based and item-based collaborative filtering. He does a great job of walking through the reasoning in recommendation systems and showing snippets of his code. In an attempt to review recommendation systems for myself, I will be giving my interpretations of what he taught in his post within this project.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="kn">import</span> <span class="n">cosine_similarity</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">pairwise_distances</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here we can see the ratings data for Amazon electronics. Each record contains a userId, itemId, and rating on the scale of 1.0-5.0.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fullData</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/Users/andrewsportsman/Documents/BGSU/Spring/Big Data/Project_2/ratings_Electronics.csv&#39;</span><span class="p">,</span>
+                       <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">fullData</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;timestamp&#39;</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/Users/andrewsportsman/anaconda3/lib/python3.7/site-packages/numpy/lib/arraysetops.py:569: FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will perform elementwise comparison
+  mask |= (ar1 == a)
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[4]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userId</th>
+      <th>itemId</th>
+      <th>rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AKM1MP6P0OYPR</td>
+      <td>0132793040</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A2CX7LUOHB2NDG</td>
+      <td>0321732944</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>A2NWSAGRHCP8N5</td>
+      <td>0439886341</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>A2WNBOD3WNDNKT</td>
+      <td>0439886341</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>A1GI0U4ZRJA8WN</td>
+      <td>0439886341</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>7824477</th>
+      <td>A2YZI3C9MOHC0L</td>
+      <td>BT008UKTMW</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>7824478</th>
+      <td>A322MDK0M89RHN</td>
+      <td>BT008UKTMW</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>7824479</th>
+      <td>A1MH90R0ADMIK0</td>
+      <td>BT008UKTMW</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>7824480</th>
+      <td>A10M2KEFPEQDHN</td>
+      <td>BT008UKTMW</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>7824481</th>
+      <td>A2G81TMIOIDEQQ</td>
+      <td>BT008V9J9U</td>
+      <td>5.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>7824482 rows × 3 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Normalize-Ratings">Normalize Ratings<a class="anchor-link" href="#Normalize-Ratings">&#182;</a></h2><p>In order to properly compare ratings across different users, some form of normalization is needed. Users might rate using different internal scales. For example, someone's rating of 3 might be equal to another rating of 2.</p>
+<p>To normalize the ratings, I will take the difference of a user's rating and their overall average rating. To do this, I first calculate average ratings for each user. This average column is then joined onto the original user ratings data frame using the pandas merge function. It's important to remember that merge is used in pandas for what most people understand as a join in SQL.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#average rating for each user</span>
+<span class="n">means</span> <span class="o">=</span> <span class="n">fullData</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;userId&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;rating&#39;</span><span class="p">:</span><span class="s1">&#39;mean&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">means</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;userId&#39;</span><span class="p">,</span><span class="s1">&#39;avg_rating&#39;</span><span class="p">]</span>
+<span class="n">means</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[18]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userId</th>
+      <th>avg_rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A00000262KYZUE4J55XGL</td>
+      <td>5.000000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A000063614T1OE0BUSKUT</td>
+      <td>5.000000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>A00009182QVLSWIGHLS1B</td>
+      <td>5.000000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>A00009661LC9LQPGKJ24G</td>
+      <td>5.000000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>A00010809P09NUU6ZP6H</td>
+      <td>5.000000</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>4201691</th>
+      <td>AZZZOVIBXHGDR</td>
+      <td>3.333333</td>
+    </tr>
+    <tr>
+      <th>4201692</th>
+      <td>AZZZRS1YZ8HVP</td>
+      <td>4.000000</td>
+    </tr>
+    <tr>
+      <th>4201693</th>
+      <td>AZZZSIK7NFFVP</td>
+      <td>5.000000</td>
+    </tr>
+    <tr>
+      <th>4201694</th>
+      <td>AZZZWXXUPZ1F3</td>
+      <td>5.000000</td>
+    </tr>
+    <tr>
+      <th>4201695</th>
+      <td>AZZZY1W55XHZR</td>
+      <td>4.000000</td>
+    </tr>
+  </tbody>
+</table>
+<p>4201696 rows × 2 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#join means to fullData</span>
+<span class="n">ratings_withAvg</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">fullData</span><span class="p">,</span><span class="n">means</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s1">&#39;userId&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Below, the column 'norm_rating' is created by subtracting the user's average rating from their rating for each item they have reviewed.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#normalized rating</span>
+<span class="n">ratings_withAvg</span><span class="p">[</span><span class="s1">&#39;norm_rating&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ratings_withAvg</span><span class="p">[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">ratings_withAvg</span><span class="p">[</span><span class="s1">&#39;avg_rating&#39;</span><span class="p">]</span>
+<span class="n">ratings_withAvg</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[20]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userId</th>
+      <th>itemId</th>
+      <th>rating</th>
+      <th>timestamp</th>
+      <th>avg_rating</th>
+      <th>norm_rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AKM1MP6P0OYPR</td>
+      <td>0132793040</td>
+      <td>5.0</td>
+      <td>2013-04-13</td>
+      <td>5.00</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AKM1MP6P0OYPR</td>
+      <td>B005UEB5TQ</td>
+      <td>5.0</td>
+      <td>2013-04-18</td>
+      <td>5.00</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>A2CX7LUOHB2NDG</td>
+      <td>0321732944</td>
+      <td>5.0</td>
+      <td>2012-07-01</td>
+      <td>4.75</td>
+      <td>0.25</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>A2CX7LUOHB2NDG</td>
+      <td>B000W3LJ6Y</td>
+      <td>5.0</td>
+      <td>2012-08-15</td>
+      <td>4.75</td>
+      <td>0.25</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>A2CX7LUOHB2NDG</td>
+      <td>B001EYU79A</td>
+      <td>5.0</td>
+      <td>2012-10-03</td>
+      <td>4.75</td>
+      <td>0.25</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>7824477</th>
+      <td>A5FUA9HEV2O42</td>
+      <td>BT008UKTMW</td>
+      <td>5.0</td>
+      <td>2014-07-22</td>
+      <td>5.00</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>7824478</th>
+      <td>A84WRQR47OOKR</td>
+      <td>BT008UKTMW</td>
+      <td>1.0</td>
+      <td>2014-06-03</td>
+      <td>1.00</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>7824479</th>
+      <td>A180UGKKYCPDH0</td>
+      <td>BT008UKTMW</td>
+      <td>5.0</td>
+      <td>2013-05-24</td>
+      <td>5.00</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>7824480</th>
+      <td>A2IGIIABRZ5LAB</td>
+      <td>BT008UKTMW</td>
+      <td>5.0</td>
+      <td>2012-12-29</td>
+      <td>5.00</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>7824481</th>
+      <td>A10M2KEFPEQDHN</td>
+      <td>BT008UKTMW</td>
+      <td>4.0</td>
+      <td>2011-02-13</td>
+      <td>4.00</td>
+      <td>0.00</td>
+    </tr>
+  </tbody>
+</table>
+<p>7824482 rows × 6 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Filter-data-to-highly-rated-items-and-active-users">Filter data to highly rated items and active users<a class="anchor-link" href="#Filter-data-to-highly-rated-items-and-active-users">&#182;</a></h2><p>After my first iteration, I realized users and items with too few ratings were impacting the calculation of similarity between any two users. Preprocessing for the similarity calculation involves replacing missing values with average user ratings, for users and items with few ratings, the average was dominating the calculation. For the sake of this project, I wanted to find cases of active users to find likely similarities. The process of filtering items with few ratings and unactive users is below.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>First, I calculate a quick aggregation of count of ratings per item.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">numRatings</span> <span class="o">=</span> <span class="n">ratings_withAvg</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;itemId&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;userId&#39;</span><span class="p">:</span><span class="s1">&#39;count&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">numRatings</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[23]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>itemId</th>
+      <th>userId</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0132793040</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0321732944</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0439886341</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0511189877</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0528881469</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>475997</th>
+      <td>BT008G3W52</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>475998</th>
+      <td>BT008SXQ4C</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>475999</th>
+      <td>BT008T2BGK</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>476000</th>
+      <td>BT008UKTMW</td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <th>476001</th>
+      <td>BT008V9J9U</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>476002 rows × 2 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The newly created count is then used to create a flag for items with more than 100 reviews. These are the items that will be used further in the project. Using numRatings.shape, we can see there are 13204 rows, as compared to the 476,002 above. We have successfully filtered out items with too few reviews.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">numRatings</span><span class="o">.</span><span class="n">loc</span><span class="p">[((</span><span class="n">numRatings</span><span class="o">.</span><span class="n">userId</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">),</span><span class="s1">&#39;flag&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">numRatings</span><span class="o">.</span><span class="n">loc</span><span class="p">[((</span><span class="n">numRatings</span><span class="o">.</span><span class="n">userId</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">),</span><span class="s1">&#39;flag&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">numRatings</span> <span class="o">=</span> <span class="n">numRatings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">numRatings</span><span class="o">.</span><span class="n">flag</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">numRatings</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[24]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(13204, 3)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Similar to above with items, the count of ratings left by each user is found.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">userRatings</span> <span class="o">=</span> <span class="n">ratings_withAvg</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;userId&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;rating&#39;</span><span class="p">:</span><span class="s1">&#39;count&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Users with less than 25 ratings are filtered out of the data.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">userRatings</span><span class="o">.</span><span class="n">loc</span><span class="p">[((</span><span class="n">userRatings</span><span class="o">.</span><span class="n">rating</span> <span class="o">&gt;=</span> <span class="mi">25</span><span class="p">),</span><span class="s1">&#39;flag&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">userRatings</span><span class="o">.</span><span class="n">loc</span><span class="p">[((</span><span class="n">userRatings</span><span class="o">.</span><span class="n">rating</span> <span class="o">&lt;</span> <span class="mi">25</span><span class="p">),</span><span class="s1">&#39;flag&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">userRatings</span> <span class="o">=</span> <span class="n">userRatings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">userRatings</span><span class="o">.</span><span class="n">flag</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">userRatings</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[29]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(8025, 3)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">itemsKeep</span> <span class="o">=</span> <span class="n">numRatings</span><span class="o">.</span><span class="n">itemId</span>
+<span class="n">usersKeep</span> <span class="o">=</span> <span class="n">userRatings</span><span class="o">.</span><span class="n">userId</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ratings_filtered</span> <span class="o">=</span> <span class="n">ratings_withAvg</span><span class="p">[</span><span class="n">ratings_withAvg</span><span class="p">[</span><span class="s1">&#39;userId&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">usersKeep</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span>
+<span class="n">ratings_filtered</span> <span class="o">=</span> <span class="n">ratings_filtered</span><span class="p">[</span><span class="n">ratings_filtered</span><span class="p">[</span><span class="s1">&#39;itemId&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">itemsKeep</span><span class="p">)</span><span class="o">==</span><span class="kc">True</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ratings_filtered</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[32]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userId</th>
+      <th>itemId</th>
+      <th>rating</th>
+      <th>timestamp</th>
+      <th>avg_rating</th>
+      <th>norm_rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>80</th>
+      <td>A1H8PY3QHMQQA0</td>
+      <td>B00005AXHW</td>
+      <td>4.0</td>
+      <td>2013-12-01</td>
+      <td>4.444444</td>
+      <td>-0.444444</td>
+    </tr>
+    <tr>
+      <th>81</th>
+      <td>A1H8PY3QHMQQA0</td>
+      <td>B000068O3C</td>
+      <td>5.0</td>
+      <td>2012-02-21</td>
+      <td>4.444444</td>
+      <td>0.555556</td>
+    </tr>
+    <tr>
+      <th>82</th>
+      <td>A1H8PY3QHMQQA0</td>
+      <td>B00009UT9B</td>
+      <td>5.0</td>
+      <td>2013-02-17</td>
+      <td>4.444444</td>
+      <td>0.555556</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>A1H8PY3QHMQQA0</td>
+      <td>B0030MITDK</td>
+      <td>5.0</td>
+      <td>2010-09-25</td>
+      <td>4.444444</td>
+      <td>0.555556</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>A1H8PY3QHMQQA0</td>
+      <td>B003Y0631I</td>
+      <td>5.0</td>
+      <td>2014-03-15</td>
+      <td>4.444444</td>
+      <td>0.555556</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>6117897</th>
+      <td>A2QW4HHHC6XWH4</td>
+      <td>B00FNPD1VW</td>
+      <td>5.0</td>
+      <td>2014-07-02</td>
+      <td>4.147059</td>
+      <td>0.852941</td>
+    </tr>
+    <tr>
+      <th>6117898</th>
+      <td>A2QW4HHHC6XWH4</td>
+      <td>B00FRMAOIO</td>
+      <td>5.0</td>
+      <td>2014-03-14</td>
+      <td>4.147059</td>
+      <td>0.852941</td>
+    </tr>
+    <tr>
+      <th>6117899</th>
+      <td>A2QW4HHHC6XWH4</td>
+      <td>B00FZ9SM4M</td>
+      <td>5.0</td>
+      <td>2014-01-09</td>
+      <td>4.147059</td>
+      <td>0.852941</td>
+    </tr>
+    <tr>
+      <th>6117905</th>
+      <td>A2QW4HHHC6XWH4</td>
+      <td>B00HFAEBWG</td>
+      <td>3.0</td>
+      <td>2014-03-06</td>
+      <td>4.147059</td>
+      <td>-1.147059</td>
+    </tr>
+    <tr>
+      <th>6117914</th>
+      <td>A2QW4HHHC6XWH4</td>
+      <td>B00JP12170</td>
+      <td>4.0</td>
+      <td>2014-06-27</td>
+      <td>4.147059</td>
+      <td>-0.147059</td>
+    </tr>
+  </tbody>
+</table>
+<p>169984 rows × 6 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Cosine-Similarity">Cosine Similarity<a class="anchor-link" href="#Cosine-Similarity">&#182;</a></h2><p>The idea behind user-based collaborative filtering is to recommend items to users based on the items other similar users like. For example, if you and I rate the same 2 items very highly, I will probably like a 3rd item you like that I haven't yet rated. To find this similarity between users, we need one record per user with the score they gave to each item as the columns. To do this, a pivot table is created of userId, ItemId, and the ratings for each combination. These vectors will the be used to calculate similarity between users. Cosine similarity measures the cosine of the angle between two vectors.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">final</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">ratings_filtered</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="s1">&#39;norm_rating&#39;</span><span class="p">,</span>
+                       <span class="n">index</span><span class="o">=</span><span class="s1">&#39;userId&#39;</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;itemId&#39;</span><span class="p">)</span>
+<span class="n">final</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[35]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>itemId</th>
+      <th>0972683275</th>
+      <th>1400501466</th>
+      <th>1400501776</th>
+      <th>1400532620</th>
+      <th>1400532655</th>
+      <th>140053271X</th>
+      <th>1400599997</th>
+      <th>1400698987</th>
+      <th>9573212919</th>
+      <th>9575871979</th>
+      <th>...</th>
+      <th>B00J5HDEPC</th>
+      <th>B00J5O7BMC</th>
+      <th>B00JDAIMQ2</th>
+      <th>B00JEGLLEA</th>
+      <th>B00JKCH4X0</th>
+      <th>B00JP12170</th>
+      <th>B00K0OBEE2</th>
+      <th>B00K4VQZCM</th>
+      <th>B00K91DB7Y</th>
+      <th>B00KFAGCUM</th>
+    </tr>
+    <tr>
+      <th>userId</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>A10063PJ5C9WQQ</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>A100NGGXRQF0AQ</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>A100UD67AHFODS</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>A100WO06OQR8BQ</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>-2.651515</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>A101L4HF0IZ33C</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>AZYJE40XW6MFG</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>AZZ2DEE2NTIM7</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>AZZ5ASC403N74</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>AZZX23UGJGKTT</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>AZZYW4YOE1B6E</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>8019 rows × 12537 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is a very sparse matrix meaning there are several NaN's introduced because not every customer rates every item. Recall items with less than 25 reviews were previously filtered out. Leaving them in would have exacerbated the problem of missing values. Here, NaN will be replaced with the average rating from the user per row (axis = 1).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">final_userAvg</span> <span class="o">=</span> <span class="n">final</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">final_userAvg</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[36]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>itemId</th>
+      <th>0972683275</th>
+      <th>1400501466</th>
+      <th>1400501776</th>
+      <th>1400532620</th>
+      <th>1400532655</th>
+      <th>140053271X</th>
+      <th>1400599997</th>
+      <th>1400698987</th>
+      <th>9573212919</th>
+      <th>9575871979</th>
+      <th>...</th>
+      <th>B00J5HDEPC</th>
+      <th>B00J5O7BMC</th>
+      <th>B00JDAIMQ2</th>
+      <th>B00JEGLLEA</th>
+      <th>B00JKCH4X0</th>
+      <th>B00JP12170</th>
+      <th>B00K0OBEE2</th>
+      <th>B00K4VQZCM</th>
+      <th>B00K91DB7Y</th>
+      <th>B00KFAGCUM</th>
+    </tr>
+    <tr>
+      <th>userId</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>A10063PJ5C9WQQ</th>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>...</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+      <td>0.500000</td>
+    </tr>
+    <tr>
+      <th>A100NGGXRQF0AQ</th>
+      <td>0.373333</td>
+      <td>0.373333</td>
+      <td>0.373333</td>
+      <td>0.373333</td>
+      <td>0.373333</td>
+      <td>0.373333</td>
+      <td>0.373333</td>
+      <td>0.373333</td>
+      <td>0.373333</td>
+      <td>0.373333</td>
+      <td>...</td>
+      <td>0.373333</td>
+      <td>0.373333</td>
+      <td>0.373333</td>
+      <td>0.373333</td>
+      <td>0.373333</td>
+      <td>0.373333</td>
+      <td>0.373333</td>
+      <td>0.373333</td>
+      <td>0.373333</td>
+      <td>0.373333</td>
+    </tr>
+    <tr>
+      <th>A100UD67AHFODS</th>
+      <td>0.125182</td>
+      <td>0.125182</td>
+      <td>0.125182</td>
+      <td>0.125182</td>
+      <td>0.125182</td>
+      <td>0.125182</td>
+      <td>0.125182</td>
+      <td>0.125182</td>
+      <td>0.125182</td>
+      <td>0.125182</td>
+      <td>...</td>
+      <td>0.125182</td>
+      <td>0.125182</td>
+      <td>0.125182</td>
+      <td>0.125182</td>
+      <td>0.125182</td>
+      <td>0.125182</td>
+      <td>0.125182</td>
+      <td>0.125182</td>
+      <td>0.125182</td>
+      <td>0.125182</td>
+    </tr>
+    <tr>
+      <th>A100WO06OQR8BQ</th>
+      <td>-0.033094</td>
+      <td>-0.033094</td>
+      <td>-0.033094</td>
+      <td>-0.033094</td>
+      <td>-0.033094</td>
+      <td>-0.033094</td>
+      <td>-0.033094</td>
+      <td>-0.033094</td>
+      <td>-0.033094</td>
+      <td>-0.033094</td>
+      <td>...</td>
+      <td>-0.033094</td>
+      <td>-0.033094</td>
+      <td>-0.033094</td>
+      <td>-0.033094</td>
+      <td>-0.033094</td>
+      <td>-0.033094</td>
+      <td>-0.033094</td>
+      <td>-0.033094</td>
+      <td>-2.651515</td>
+      <td>-0.033094</td>
+    </tr>
+    <tr>
+      <th>A101L4HF0IZ33C</th>
+      <td>-0.197802</td>
+      <td>-0.197802</td>
+      <td>-0.197802</td>
+      <td>-0.197802</td>
+      <td>-0.197802</td>
+      <td>-0.197802</td>
+      <td>-0.197802</td>
+      <td>-0.197802</td>
+      <td>-0.197802</td>
+      <td>-0.197802</td>
+      <td>...</td>
+      <td>-0.197802</td>
+      <td>-0.197802</td>
+      <td>-0.197802</td>
+      <td>-0.197802</td>
+      <td>-0.197802</td>
+      <td>-0.197802</td>
+      <td>-0.197802</td>
+      <td>-0.197802</td>
+      <td>-0.197802</td>
+      <td>-0.197802</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>AZYJE40XW6MFG</th>
+      <td>0.226143</td>
+      <td>0.226143</td>
+      <td>0.226143</td>
+      <td>0.226143</td>
+      <td>0.226143</td>
+      <td>0.226143</td>
+      <td>0.226143</td>
+      <td>0.226143</td>
+      <td>0.226143</td>
+      <td>0.226143</td>
+      <td>...</td>
+      <td>0.226143</td>
+      <td>0.226143</td>
+      <td>0.226143</td>
+      <td>0.226143</td>
+      <td>0.226143</td>
+      <td>0.226143</td>
+      <td>0.226143</td>
+      <td>0.226143</td>
+      <td>0.226143</td>
+      <td>0.226143</td>
+    </tr>
+    <tr>
+      <th>AZZ2DEE2NTIM7</th>
+      <td>-0.042443</td>
+      <td>-0.042443</td>
+      <td>-0.042443</td>
+      <td>-0.042443</td>
+      <td>-0.042443</td>
+      <td>-0.042443</td>
+      <td>-0.042443</td>
+      <td>-0.042443</td>
+      <td>-0.042443</td>
+      <td>-0.042443</td>
+      <td>...</td>
+      <td>-0.042443</td>
+      <td>-0.042443</td>
+      <td>-0.042443</td>
+      <td>-0.042443</td>
+      <td>-0.042443</td>
+      <td>-0.042443</td>
+      <td>-0.042443</td>
+      <td>-0.042443</td>
+      <td>-0.042443</td>
+      <td>-0.042443</td>
+    </tr>
+    <tr>
+      <th>AZZ5ASC403N74</th>
+      <td>-0.197143</td>
+      <td>-0.197143</td>
+      <td>-0.197143</td>
+      <td>-0.197143</td>
+      <td>-0.197143</td>
+      <td>-0.197143</td>
+      <td>-0.197143</td>
+      <td>-0.197143</td>
+      <td>-0.197143</td>
+      <td>-0.197143</td>
+      <td>...</td>
+      <td>-0.197143</td>
+      <td>-0.197143</td>
+      <td>-0.197143</td>
+      <td>-0.197143</td>
+      <td>-0.197143</td>
+      <td>-0.197143</td>
+      <td>-0.197143</td>
+      <td>-0.197143</td>
+      <td>-0.197143</td>
+      <td>-0.197143</td>
+    </tr>
+    <tr>
+      <th>AZZX23UGJGKTT</th>
+      <td>0.094017</td>
+      <td>0.094017</td>
+      <td>0.094017</td>
+      <td>0.094017</td>
+      <td>0.094017</td>
+      <td>0.094017</td>
+      <td>0.094017</td>
+      <td>0.094017</td>
+      <td>0.094017</td>
+      <td>0.094017</td>
+      <td>...</td>
+      <td>0.094017</td>
+      <td>0.094017</td>
+      <td>0.094017</td>
+      <td>0.094017</td>
+      <td>0.094017</td>
+      <td>0.094017</td>
+      <td>0.094017</td>
+      <td>0.094017</td>
+      <td>0.094017</td>
+      <td>0.094017</td>
+    </tr>
+    <tr>
+      <th>AZZYW4YOE1B6E</th>
+      <td>-0.086772</td>
+      <td>-0.086772</td>
+      <td>-0.086772</td>
+      <td>-0.086772</td>
+      <td>-0.086772</td>
+      <td>-0.086772</td>
+      <td>-0.086772</td>
+      <td>-0.086772</td>
+      <td>-0.086772</td>
+      <td>-0.086772</td>
+      <td>...</td>
+      <td>-0.086772</td>
+      <td>-0.086772</td>
+      <td>-0.086772</td>
+      <td>-0.086772</td>
+      <td>-0.086772</td>
+      <td>-0.086772</td>
+      <td>-0.086772</td>
+      <td>-0.086772</td>
+      <td>-0.086772</td>
+      <td>-0.086772</td>
+    </tr>
+  </tbody>
+</table>
+<p>8019 rows × 12537 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The code cell below calculates the cosine similarity between users by using the filled matrix from above. The resulting matrix contains the similarity between each user. The diagonal is filled with 0, as it represents the user's similarity with themselves. We do not want to include the user in their list of similar users.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[429]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#User similarity</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">final_userAvg</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">similarity</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">final_userAvg</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">similarity</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">final_userAvg</span><span class="o">.</span><span class="n">index</span>
+<span class="n">similarity</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[429]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>userId</th>
+      <th>A10063PJ5C9WQQ</th>
+      <th>A100NGGXRQF0AQ</th>
+      <th>A100UD67AHFODS</th>
+      <th>A100WO06OQR8BQ</th>
+      <th>A101L4HF0IZ33C</th>
+      <th>A101OAAMZYWQ3U</th>
+      <th>A102RLOGIBBDMW</th>
+      <th>A10471FSILZ25C</th>
+      <th>A105S56ODHGJEK</th>
+      <th>A105TOJ6LTVMBG</th>
+      <th>...</th>
+      <th>AZWQEM8GKXQ5Y</th>
+      <th>AZXFS8GCTSQ5R</th>
+      <th>AZXQ0WME7X6UT</th>
+      <th>AZXS6P5QWNMLC</th>
+      <th>AZYBZEVISD0YX</th>
+      <th>AZYJE40XW6MFG</th>
+      <th>AZZ2DEE2NTIM7</th>
+      <th>AZZ5ASC403N74</th>
+      <th>AZZX23UGJGKTT</th>
+      <th>AZZYW4YOE1B6E</th>
+    </tr>
+    <tr>
+      <th>userId</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>A10063PJ5C9WQQ</th>
+      <td>0.000000</td>
+      <td>0.992239</td>
+      <td>0.874300</td>
+      <td>-0.248849</td>
+      <td>-0.965594</td>
+      <td>-0.963214</td>
+      <td>-0.688192</td>
+      <td>-0.975368</td>
+      <td>0.994485</td>
+      <td>0.924392</td>
+      <td>...</td>
+      <td>0.879126</td>
+      <td>-0.995397</td>
+      <td>0.962318</td>
+      <td>0.853974</td>
+      <td>0.969778</td>
+      <td>0.977858</td>
+      <td>-0.834853</td>
+      <td>-0.984603</td>
+      <td>0.955827</td>
+      <td>-0.949418</td>
+    </tr>
+    <tr>
+      <th>A100NGGXRQF0AQ</th>
+      <td>0.992239</td>
+      <td>0.000000</td>
+      <td>0.867763</td>
+      <td>-0.246340</td>
+      <td>-0.958374</td>
+      <td>-0.956013</td>
+      <td>-0.683047</td>
+      <td>-0.968076</td>
+      <td>0.987050</td>
+      <td>0.917481</td>
+      <td>...</td>
+      <td>0.872553</td>
+      <td>-0.987955</td>
+      <td>0.955123</td>
+      <td>0.847589</td>
+      <td>0.962528</td>
+      <td>0.969029</td>
+      <td>-0.828611</td>
+      <td>-0.977242</td>
+      <td>0.948681</td>
+      <td>-0.942319</td>
+    </tr>
+    <tr>
+      <th>A100UD67AHFODS</th>
+      <td>0.874300</td>
+      <td>0.867763</td>
+      <td>0.000000</td>
+      <td>-0.217631</td>
+      <td>-0.844461</td>
+      <td>-0.842380</td>
+      <td>-0.599348</td>
+      <td>-0.853009</td>
+      <td>0.869727</td>
+      <td>0.809450</td>
+      <td>...</td>
+      <td>0.768840</td>
+      <td>-0.870525</td>
+      <td>0.841595</td>
+      <td>0.748316</td>
+      <td>0.848120</td>
+      <td>0.855186</td>
+      <td>-0.730121</td>
+      <td>-0.861085</td>
+      <td>0.835920</td>
+      <td>-0.830314</td>
+    </tr>
+    <tr>
+      <th>A100WO06OQR8BQ</th>
+      <td>-0.248849</td>
+      <td>-0.246340</td>
+      <td>-0.217631</td>
+      <td>0.000000</td>
+      <td>0.240356</td>
+      <td>0.239764</td>
+      <td>0.164278</td>
+      <td>0.242789</td>
+      <td>-0.248055</td>
+      <td>-0.225948</td>
+      <td>...</td>
+      <td>-0.213440</td>
+      <td>0.247775</td>
+      <td>-0.239541</td>
+      <td>-0.206591</td>
+      <td>-0.241398</td>
+      <td>-0.241732</td>
+      <td>0.207812</td>
+      <td>0.238287</td>
+      <td>-0.237925</td>
+      <td>0.236330</td>
+    </tr>
+    <tr>
+      <th>A101L4HF0IZ33C</th>
+      <td>-0.965594</td>
+      <td>-0.958374</td>
+      <td>-0.844461</td>
+      <td>0.240356</td>
+      <td>0.000000</td>
+      <td>0.930340</td>
+      <td>0.664704</td>
+      <td>0.942079</td>
+      <td>-0.960544</td>
+      <td>-0.892843</td>
+      <td>...</td>
+      <td>-0.849122</td>
+      <td>0.961425</td>
+      <td>-0.929474</td>
+      <td>-0.824829</td>
+      <td>-0.936680</td>
+      <td>-0.944484</td>
+      <td>0.806360</td>
+      <td>0.950999</td>
+      <td>-0.923206</td>
+      <td>0.917015</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 8019 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In order to give myself the option of only using items that a user has actually rated and avoid giving too much weight to a user's overall average, I created a matrix where missing values are filled with -99 rather than each user's average rating.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">final_filter</span> <span class="o">=</span> <span class="n">final</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="o">-</span><span class="mi">99</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Top-k-neighbors-per-user">Top k neighbors per user<a class="anchor-link" href="#Top-k-neighbors-per-user">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>With the similarity matrix created, we now need the capability to select the top <em>n</em> similar users. We do not want to recommend items to user that a distantly similar user has rated highly. The function find_n_neighbors() sorts a given data frame and keeps the first <em>n</em> columns.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[383]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">find_n_neighbors</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="p">:</span><span class="n">n</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+           <span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">df</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[467]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">similar_user_k50</span> <span class="o">=</span> <span class="n">find_n_neighbors</span><span class="p">(</span><span class="n">similarity</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[463]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">scores</span><span class="p">(</span><span class="n">user</span><span class="p">,</span><span class="n">item</span><span class="p">):</span>
+    <span class="c1">#the input user&#39;s similar users</span>
+    <span class="n">similar_users</span> <span class="o">=</span> <span class="n">similar_user_k50</span><span class="p">[</span><span class="n">similar_user_k50</span><span class="o">.</span><span class="n">userId</span><span class="o">==</span><span class="n">user</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    
+    <span class="c1">#the input user average rating: ru</span>
+    <span class="n">user_avg_rating</span> <span class="o">=</span> <span class="n">means</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">means</span><span class="o">.</span><span class="n">userId</span> <span class="o">==</span> <span class="n">user</span><span class="p">][</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span>
+    
+    <span class="c1">#pull ratings and users from the main data for the particular item, rv&#39;s</span>
+    <span class="n">item_ratings</span> <span class="o">=</span> <span class="n">final_filter</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="n">item</span><span class="p">]</span>
+    
+    <span class="c1"># Filter to items actually rated by users. Not the NaN replaced with average</span>
+    <span class="n">item_ratings_RealRating</span> <span class="o">=</span> <span class="n">item_ratings</span><span class="p">[</span><span class="n">item_ratings</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">99</span><span class="p">]</span>
+    
+    <span class="c1">#Check if the users whose ratings were pulled are in your similar users</span>
+    <span class="n">other_users_similar</span> <span class="o">=</span> <span class="n">item_ratings_RealRating</span><span class="p">[</span><span class="n">item_ratings_RealRating</span>
+                                                  <span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">similar_users</span><span class="o">.</span><span class="n">squeeze</span><span class="p">())]</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">other_users_similar</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Please rate more items&quot;</span>
+    
+    <span class="n">other_users_similarNull</span> <span class="o">=</span> <span class="n">other_users_similar</span><span class="p">[</span><span class="n">other_users_similar</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
+    
+    <span class="c1">#take the value of the index, which is the userId</span>
+    <span class="n">other_users</span> <span class="o">=</span>  <span class="n">other_users_similarNull</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span>
+    
+    <span class="n">similarity_with_other_users</span> <span class="o">=</span> <span class="n">similarity</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">user</span><span class="p">,</span><span class="n">other_users</span><span class="p">]</span>
+    
+    <span class="n">similarity_ScaledRating</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">similarity_with_other_users</span><span class="p">,</span><span class="n">item_ratings</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="n">similarity_ScaledRating</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;userId&#39;</span><span class="p">,</span><span class="s1">&#39;sim&#39;</span><span class="p">,</span><span class="s1">&#39;scaledRating&#39;</span><span class="p">]</span>
+    <span class="n">similarity_ScaledRating</span><span class="p">[</span><span class="s1">&#39;weighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">similarity_ScaledRating</span><span class="p">[</span><span class="s1">&#39;sim&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">similarity_ScaledRating</span><span class="p">[</span><span class="s1">&#39;scaledRating&#39;</span><span class="p">]</span>
+    <span class="n">sum_weighted_ratings</span> <span class="o">=</span> <span class="n">similarity_ScaledRating</span><span class="o">.</span><span class="n">weighted</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">sum_weights</span> <span class="o">=</span> <span class="n">similarity_ScaledRating</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">user_avg_rating</span> <span class="o">+</span> <span class="p">(</span><span class="n">sum_weighted_ratings</span><span class="o">/</span><span class="n">sum_weights</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[537]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">recommend</span><span class="p">(</span><span class="n">user</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+    <span class="n">itemsRated</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ratings_filtered</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">ratings_filtered</span><span class="o">.</span><span class="n">userId</span> <span class="o">==</span> <span class="n">user</span><span class="p">][</span><span class="s1">&#39;itemId&#39;</span><span class="p">])</span>
+    <span class="n">similarUsers</span> <span class="o">=</span> <span class="n">similar_user_k15</span><span class="p">[</span><span class="n">similar_user_k15</span><span class="o">.</span><span class="n">userId</span><span class="o">==</span><span class="n">user</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    
+    <span class="n">itemsSimilarUsersHaveRated</span> <span class="o">=</span> <span class="n">ratings_filtered</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">ratings_filtered</span><span class="o">.</span><span class="n">userId</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">similarUsers</span><span class="o">.</span><span class="n">squeeze</span><span class="p">())][</span><span class="s1">&#39;itemId&#39;</span><span class="p">]</span>
+    
+    <span class="c1">#counter to find what item other users have reviewed the most</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">itemsSimilarUsersHaveRated</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
+    
+    <span class="n">itemsSimilarUsersHaveRated</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">itemsSimilarUsersHaveRated</span><span class="p">)</span>
+    <span class="n">itemsYouNotRated</span> <span class="o">=</span> <span class="n">itemsSimilarUsersHaveRated</span> <span class="o">-</span> <span class="n">itemsRated</span>
+    <span class="n">itemsYouNotRated</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itemsYouNotRated</span><span class="p">)</span>
+    <span class="n">my_scores</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">itemsYouNotRated</span><span class="p">:</span>
+        <span class="n">my_scores</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">scores</span><span class="p">(</span><span class="n">user</span><span class="p">,</span><span class="n">item</span><span class="p">))</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;scores&#39;</span><span class="p">:</span><span class="n">my_scores</span><span class="p">,</span><span class="s1">&#39;items&#39;</span><span class="p">:</span><span class="n">itemsYouNotRated</span><span class="p">})</span>
+    
+    <span class="n">items</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;scores&#39;</span><span class="p">,</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)[</span><span class="s1">&#39;items&#39;</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">items</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">m</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[538]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter userId for recommendations:&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">predicted_items</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">m</span> <span class="o">=</span> <span class="n">recommend</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Recommendations for user &quot;</span> <span class="o">+</span> <span class="n">user</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">predicted_items</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>    
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;You may also be interested in &#39;</span> <span class="o">+</span> <span class="n">m</span> <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">+</span><span class="s1">&#39;Your similar users reviewd &#39;</span><span class="o">+</span> <span class="n">m</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">m</span><span class="p">])</span><span class="o">+</span><span class="s1">&#39; times.&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Enter userId for recommendations:A3ONE2VJCDI5GZ
+
+
+Recommendations for user A3ONE2VJCDI5GZ
+B0000B3E8U
+B001ASU1QO
+B001202C44
+B0043T7FXE
+B00D6XSRL2
+
+
+You may also be interested in B0049WBZEK
+Your similar users reviewd B0049WBZEK 2 times.
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+ 
+
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="http://sportsad.github.io/tag/python.html">python</a>
+    </p>
+  </div>
+
+
+
+
+
+</article>
+
+    <footer>
+<p>&copy;  </p>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " Andrew Sportsman's Blog ",
+  "url" : "http://sportsad.github.io",
+  "image": "",
+  "description": ""
+}
+</script>
+
+</body>
+</html>
