@@ -1113,7 +1113,7 @@ h6:hover .anchor-link {
  .highlight pre  .il { color: #666666 } /* Literal.Number.Integer.Long */&lt;/style&gt;&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h1 id="Scaffolding-in-Tableau-Prep"&gt;Scaffolding in Tableau Prep&lt;a class="anchor-link" href="#Scaffolding-in-Tableau-Prep"&gt;&amp;#182;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;Recently I was working on a personal project to visualize stats for my favorite soccer player Eden Hazard. I'm a big fan of Chelsea FC from London and Eden Hazard was a Chelsea player from 2012 to 2019. I found a dataset from kaggle containing about 9,000 games from around Europe which offered a lot of detailed information about players and the events that happen during games.&lt;/p&gt;
+&lt;p&gt;Recently I was working on a personal project to visualize stats for my favorite soccer player Eden Hazard. I'm a big fan of Chelsea FC from London and Eden Hazard was a Chelsea player from 2012 to 2019. I found a dataset from kaggle containing about 9,000 games from around Europe which offered a lot of detailed information about players and the events that happen during games.&lt;/p&gt;
 &lt;p&gt;Here's a peak at the data that can be found following this link &lt;a href="https://www.kaggle.com/secareanualin/football-events"&gt;https://www.kaggle.com/secareanualin/football-events&lt;/a&gt;:&lt;/p&gt;
 
 &lt;/div&gt;
@@ -1126,12 +1126,31 @@ h6:hover .anchor-link {
     &lt;div class="input_area"&gt;
 &lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# change the cell width&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;IPython.core.display&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;display&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;HTML&lt;/span&gt;
-&lt;span class="n"&gt;display&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;HTML&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;lt;style&amp;gt;.container { width:100% !important; }&amp;lt;/style&amp;gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;display&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;HTML&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;lt;style&amp;gt;.container { width:90% !important; }&amp;lt;/style&amp;gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pd&lt;/span&gt;
 &lt;span class="n"&gt;soccer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/Users/andrewsportsman/Documents/Data/football-events/events.csv&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
     &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;
+
+    &lt;div class="prompt"&gt;&lt;/div&gt;
+
+
+
+&lt;div class="output_html rendered_html output_subarea "&gt;
+&lt;style&gt;.container { width:90% !important; }&lt;/style&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -1429,7 +1448,7 @@ h6:hover .anchor-link {
 &lt;p&gt;&lt;img src="../img/allCombos.png" alt="combinations"&gt;&lt;/p&gt;
 &lt;p&gt;I also created a calculated field to identify which records actually occured in the game. For the data of all combinations, the value for 'occur all' is 0.&lt;/p&gt;
 &lt;p&gt;The next step is to join the data of all combinations back to the original data. The original data also has a calculated field to keep track of events that actually occurred. This takes the value of 1. The result of the join can be seen below. The resulting data set has a record for each game, event type, and. field location for Eden Hazard. This allowed me to visualize data that was not initially present in the original data set. Sometimes, people will simply pad a data set in excel with the missing records, but Tableau Prep offers a great option to scaffold data and guarantee all data points are covered.&lt;/p&gt;
-&lt;p&gt;&lt;img src="../img/result.png" alt="combinations"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="../img/result.png" alt="result"&gt;&lt;/p&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1442,19 +1461,6 @@ h6:hover .anchor-link {
 
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In&amp;nbsp;[&amp;nbsp;]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-    &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; 
-&lt;/pre&gt;&lt;/div&gt;
-
-    &lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
 &lt;/div&gt;
  
 
